@@ -93,7 +93,24 @@ class My_App(QtWidgets.QMainWindow):
 				good_points.append(m)
 		
 		# Find the matches with the good points and draw them
-		# frame = cv2.drawMatches(selected_Image, kp_image, grayframe, kp_grayframe, good_points, frame) #Changed grayframe to frame (Last argument)
+
+		# Assuming selected_Image and frame are your two images
+		# Assuming kp_image and kp_grayframe are the keypoints
+
+		# Calculate the width of the output image
+		output_width = selected_Image.shape[1] + frame.shape[1]
+
+		# Create a blank output image with the required width and height
+		output_image = np.zeros((max(selected_Image.shape[0], frame.shape[0]), output_width, 3), dtype=np.uint8)
+
+		# Draw the first image on the output image
+		output_image[:selected_Image.shape[0], :selected_Image.shape[1]] = cv2.cvtColor(selected_Image, cv2.COLOR_GRAY2BGR)
+
+		# Draw the second image next to the first image
+		output_image[:frame.shape[0], selected_Image.shape[1]:] = frame
+
+		output_image = cv2.drawMatches(selected_Image, kp_image, frame, kp_grayframe, good_points, frame) #Changed grayframe to frame (Last argument)
+		# frame = cv2.drawMatches(selected_Image, kp_image, grayframe, kp_grayframe, good_points, frame, flags=2) #Changed grayframe to frame (Last argument)
 
 		# Now Homography to highlight the template in the frame
 		# queryIDX gives the index of the matched points in the query image
@@ -122,7 +139,7 @@ class My_App(QtWidgets.QMainWindow):
 		if len(homography) != 0:
 			pixmap = self.convert_cv_to_pixmap(homography)
 		else:			
-			pixmap = self.convert_cv_to_pixmap(frame)
+			pixmap = self.convert_cv_to_pixmap(output_image)
 		self.live_image_label.setPixmap(pixmap)
 
 	def SLOT_toggle_camera(self):
