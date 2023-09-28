@@ -75,7 +75,7 @@ class My_App(QtWidgets.QMainWindow):
 		kp_grayframe, desc_grayframe = sift.detectAndCompute(grayframe, None)
 		
 		#Draw the key points on the original frame
-		# annotated_image = cv2.drawKeypoints(frame, kp_grayframe, frame)
+		# annotated_image = cv2.drawKeypoints(frame, kp_grayframe, frame) 
 
 		#Draw keypoints on gray frame
 		# grayframe = cv2.drawKeypoints(grayframe, kp_grayframe, grayframe)
