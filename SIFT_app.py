@@ -131,7 +131,7 @@ class My_App(QtWidgets.QMainWindow):
 
 			#Draw the lines on the detected image
 			CloseLines = True
-			LineColor = (255,0,0)
+			LineColor = (130,55,210)
 			LineThickness = 3
 			#Add the homography outline to the frame
 			homography  = cv2.polylines(frame, [np.int32(dst)], CloseLines, LineColor, LineThickness)
