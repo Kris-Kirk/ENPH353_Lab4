@@ -7,8 +7,10 @@ import cv2
 import sys
 import numpy as np
 
+## @brief Main application class for SIFT_app
 class My_App(QtWidgets.QMainWindow):
 
+	## @brief Constructor for My_App class
 	def __init__(self):
 		super(My_App, self).__init__()
 		loadUi("./SIFT_app.ui", self)
@@ -33,6 +35,7 @@ class My_App(QtWidgets.QMainWindow):
 		self.feature_match_constant = 0.6
 		self.num_Good_Matches = 10 # Number of good matches to be found for homography
 
+	## @brief Slot function for browse button
 	def SLOT_browse_button(self):
 		dlg = QtWidgets.QFileDialog()
 		dlg.setFileMode(QtWidgets.QFileDialog.ExistingFile)
@@ -45,7 +48,12 @@ class My_App(QtWidgets.QMainWindow):
 
 		print("Loaded template image file: " + self.template_path)
 
-	# Source: stackoverflow.com/questions/34232632/
+	## @brief Function to convert OpenCV image to QPixmap
+    #  @param cv_img OpenCV image to be converted
+    #  @return QPixmap object
+    #  @details This function converts an OpenCV image to a QPixmap object
+    #           that can be displayed in a QLabel widget.
+    #  @source stackoverflow.com/questions/34232632/
 	def convert_cv_to_pixmap(self, cv_img):
 		cv_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
 		height, width, channel = cv_img.shape
@@ -53,12 +61,12 @@ class My_App(QtWidgets.QMainWindow):
 		q_img = QtGui.QImage(cv_img.data, width, height, 
 					bytesPerLine, QtGui.QImage.Format_RGB888)
 		return QtGui.QPixmap.fromImage(q_img)
-
+	
+	## @brief Slot function to query the camera and perform SIFT feature matching
 	def SLOT_query_camera(self):
 		homography = []
-
 		ret, frame = self._camera_device.read() #Frame is the full screen
-		#TODO run SIFT on the captured frame
+
 		#Create a SIFT Object
 		sift = cv2.xfeatures2d.SIFT_create()
 
@@ -136,6 +144,7 @@ class My_App(QtWidgets.QMainWindow):
 			#Add the homography outline to the frame
 			homography  = cv2.polylines(frame, [np.int32(dst)], CloseLines, LineColor, LineThickness)
 
+		## Display the output image depending on whether homography was found or not
 		if len(homography) != 0:
 			pixmap = self.convert_cv_to_pixmap(homography)
 		else:			
@@ -152,6 +161,7 @@ class My_App(QtWidgets.QMainWindow):
 			self._is_cam_enabled = True
 			self.toggle_cam_button.setText("&Disable camera")
 
+## @brief Function to run the application
 if __name__ == "__main__":
 	app = QtWidgets.QApplication(sys.argv)
 	myApp = My_App()
