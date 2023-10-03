@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="browse_button">
     <property name="geometry">
      <rect>
-      <x>59</x>
-      <y>430</y>
+      <x>60</x>
+      <y>440</y>
       <width>161</width>
       <height>26</height>
      </rect>
@@ -30,8 +30,8 @@
    <widget class="QPushButton" name="toggle_cam_button">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>430</y>
+      <x>650</x>
+      <y>440</y>
       <width>151</width>
       <height>26</height>
      </rect>

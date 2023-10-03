@@ -15,7 +15,7 @@ class My_App(QtWidgets.QMainWindow):
 		super(My_App, self).__init__()
 		loadUi("./SIFT_app.ui", self)
 
-		self._cam_id = 1
+		self._cam_id = 0
 		self._cam_fps = 10
 		self._is_cam_enabled = False
 		self._is_template_loaded = False
@@ -96,6 +96,10 @@ class My_App(QtWidgets.QMainWindow):
 		
 		#Select only good points
 		good_points = []
+		# This loop checks for the similarity between points m and n, and chooses values of m that are not close to the others.
+		# We look for distances that are significantly different from eachother, as this will leave us with distinct points rather than points of similarity.
+		# If we looked at points that had lots of matches in the other image, then it would not be unique and would not be a good point to use as a match.
+		# We need points that are distinct from eachother to identify them as "special".
 		for m,n in matches:
 			if m.distance < self.feature_match_constant*n.distance:
 				good_points.append(m)
